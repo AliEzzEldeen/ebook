@@ -1,15 +1,15 @@
-import 'package:ebook/constants.dart';
+import 'package:ebook/core/utils/app_router.dart';
 import 'package:ebook/core/utils/assets.dart';
-import 'package:ebook/features/home/presentation/views/home_view.dart';
 import 'package:ebook/features/splash/presentaion/views/widgets/sliding_text.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class SplashViewBody extends StatefulWidget {
   const SplashViewBody({Key? key}) : super(key: key);
 
   @override
   State<SplashViewBody> createState() => _SplashViewBodyState();
+
 }
 
 class _SplashViewBodyState extends State<SplashViewBody>
@@ -26,7 +26,6 @@ class _SplashViewBodyState extends State<SplashViewBody>
 
   @override
   void dispose() {
-
     super.dispose();
     animationController.dispose();
   }
@@ -46,21 +45,23 @@ class _SplashViewBodyState extends State<SplashViewBody>
     );
   }
 
-
   void initSlidingAnimation() {
     animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
     );
 
-    slidingAnimation = Tween<Offset>(begin:const Offset(0, 2) ,end:Offset.zero ).animate(animationController);
+    slidingAnimation =
+        Tween<Offset>(begin: const Offset(0, 2), end: Offset.zero)
+            .animate(animationController);
     animationController.forward();
+  }
 
+  void navToHome() {
+    Future.delayed( const Duration(seconds: 2), () {
+
+      GoRouter.of(context).push(AppRouter.kHomeView);
+    });
   }
 }
-void navToHome(){
-  Future.delayed(const Duration(seconds: 2), ()
-  {
-    Get.to(() => const HomeView(),transition: Transition.fadeIn,duration:kTranstionDuration );
-  });
-}
+
