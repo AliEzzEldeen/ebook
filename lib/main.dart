@@ -1,9 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:ebook/constants.dart';
-import 'package:ebook/core/utils/api_services.dart';
 import 'package:ebook/core/utils/app_router.dart';
-import 'package:ebook/features/home/data/data_sources/home_local.dart';
-import 'package:ebook/features/home/data/data_sources/home_remote.dart';
+import 'package:ebook/core/utils/simple_bloc_observer.dart';
 import 'package:ebook/features/home/data/repos/home_repo_impl.dart';
 import 'package:ebook/features/home/domain/entities/book_entitiy.dart';
 import 'package:ebook/features/home/domain/use_cases/fetch_featured_books.dart';
@@ -14,17 +11,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
 
+import 'core/utils/functions/setup_service_locator.dart';
 import 'features/home/presentation/manager/newest_books_cubit/newest_books_cubit.dart';
 
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(BookEntityAdapter());
 
+  setupServiceLocator();
   await Hive.openBox<BookEntity>(kFeaturedBox);
   await Hive.openBox<BookEntity>(kNewestBox);
+  Bloc.observer = SimpleBlocObserver();
 
   runApp(const MyApp());
 }
+
+
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -41,28 +43,14 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (context) {
           return FeaturedBooksCubit(
             FetchFeaturedBooksUseCase(
-              HomeRepoImpl(
-                homeLocalDataSource: HomeLocalDataImpl(),
-                homeRemoteDataSource: HomeRemoteImpl(
-                  ApiServices(
-                    Dio(),
-                  ),
-                ),
-              ),
+              getIt.get<HomeRepoImpl>()
             ),
           );
         }),
         BlocProvider(create: (context) {
           return NewestBooksCubit(
             FetchNewestBooksUseCase(
-              HomeRepoImpl(
-                homeLocalDataSource: HomeLocalDataImpl(),
-                homeRemoteDataSource: HomeRemoteImpl(
-                  ApiServices(
-                    Dio(),
-                  ),
-                ),
-              ),
+                getIt.get<HomeRepoImpl>(),
             ) ,
           );
         }),
