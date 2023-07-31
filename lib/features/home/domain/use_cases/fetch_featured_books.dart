@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:ebook/features/home/domain/repos/home_repo.dart';
 import '../../../../core/error/failure.dart';
+import '../../../../core/use_case/use_case.dart';
 import '../entities/book_entitiy.dart';
 
 class FetchFeaturedBooksUseCase extends UseCase<List<BookEntity> , NoParam>
@@ -13,13 +14,8 @@ class FetchFeaturedBooksUseCase extends UseCase<List<BookEntity> , NoParam>
   Future<Either<Failure, List<BookEntity>>> call([NoParam? param]) async
   {
   return await homeRepo.fetchFeaturedBooks();
+
   }
 }
 
 
-abstract class UseCase< T , Param >
-{
-  Future<Either< Failure, T >> call([Param param]);
-}
-
-class NoParam {}

@@ -6,7 +6,7 @@ part 'book_entitiy.g.dart';
 
 
 @HiveType(typeId: 0)
-class BookEntity {
+class   BookEntity {
   @HiveField(0)
   final String bookId;
 

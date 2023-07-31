@@ -1,6 +1,8 @@
+import 'package:ebook/constants.dart';
 import 'package:ebook/core/utils/api_services.dart';
 import 'package:ebook/features/home/data/model/book_model/book_model.dart';
 
+import '../../../../core/utils/functions/save_books.dart';
 import '../../domain/entities/book_entitiy.dart';
 
 abstract class HomeRemoteDataSource {
@@ -18,7 +20,7 @@ class HomeRemoteImpl extends HomeRemoteDataSource {
     var data = await apiServices.get(
         endPoint: 'Volumes?Filtering=free-ebooks&q=programming');
     List<BookEntity> books = getBooksList(data);
-
+    saveBooksData(books, kFeaturedBox);
     return books;
   }
 
@@ -28,6 +30,7 @@ class HomeRemoteImpl extends HomeRemoteDataSource {
     var data = await apiServices.get(
         endPoint: 'Volumes?volumes?Filtering=free-ebooks&q=programming&Sorting=newest ');
     List<BookEntity> books = getBooksList(data);
+    saveBooksData(books, kNewestBox);
     return books;
   }
 }
@@ -40,4 +43,5 @@ List<BookEntity> getBooksList(Map<String, dynamic> data) {
   }
   return books;
 }
+
 

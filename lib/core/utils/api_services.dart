@@ -10,7 +10,6 @@ class ApiServices
   Future<Map<String, dynamic>>get({required String endPoint}) async
   {
     var response = await _dio.get('$baseUrl$endPoint');
-
     return response.data;
   }
 

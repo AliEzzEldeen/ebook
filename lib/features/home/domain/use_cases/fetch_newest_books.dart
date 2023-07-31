@@ -1,14 +1,14 @@
 import 'package:dartz/dartz.dart';
 import 'package:ebook/features/home/domain/repos/home_repo.dart';
 import '../../../../core/error/failure.dart';
+import '../../../../core/use_case/use_case.dart';
 import '../entities/book_entitiy.dart';
-import 'fetch_featured_books.dart';
 
-class NewestBooksUseCase extends UseCase<List<BookEntity> , NoParam>
+class FetchNewestBooksUseCase extends UseCase<List<BookEntity> , NoParam>
 {
   final HomeRepo homeRepo;
 
-  NewestBooksUseCase(this.homeRepo);
+  FetchNewestBooksUseCase(this.homeRepo);
 
 
 
